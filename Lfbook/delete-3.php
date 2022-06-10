@@ -1,0 +1,164 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>lfbook</title>
+    <link rel="stylesheet" href="post.css">
+    <script type='text/javascript' src='post.js'> </script>
+  </head>
+
+  <header>
+    <div class="menu-toggle" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="overlay"></div>
+    <div class="container">
+      <nav>
+        <h1 class="brand"><a id="header" href="index.php">lf<span>b</span>ook</a></h1>
+        <ul id="header">
+          <li id="header"><a id="header" href="search.php">Search</a></li>
+          <li id="header"><a id="header" href="poost.php">Post</a></li>
+          <li id="header"><a id="header" href="delete.php">Delete</a></li>
+          <li id="header"><a id="header" href="contact.php">Contact us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <body>
+
+
+    <?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+//on recupere les variables insertees par l'utilisateur
+$contact = $_POST["contact"];
+$passwd = $_POST["passwd"];
+$product = $_POST["product"];
+
+//valeurs pour la connection
+$servername = "lhcp2063.webapps.net";
+$username = "dn3ag6jz_jackbj";
+$password = "Glas1492123";
+$dbname = "dn3ag6jz_Lfbook_Database";
+
+// Creer la connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) { //en cas d'erreur
+die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT username, passwd, solds FROM users";
+$result = mysqli_query($conn, $sql);
+$user_exists=0;
+
+if (mysqli_num_rows($result) > 0) {
+
+// on regarde si ce username existe deja
+while($row = mysqli_fetch_assoc($result)) {
+if ($row['username'] == $contact){
+$user_exists = 1;
+}
+}
+} else {
+echo "0 results";
+}
+
+if ($user_exists == 0){ //c'est un nouveau username => message d'erreur
+
+echo '<script language="javascript">';
+echo 'alert("There ins´t any account with that username! ")';
+echo '</script>';
+
+}
+
+else{//lorsque ce nom d'utilisateur existe
+
+$sql = "SELECT id, username, passwd, solds FROM users";
+$result = mysqli_query($conn, $sql);
+$found = 0;
+
+// on regarde si le mot de passe correspond au username
+while($row = mysqli_fetch_assoc($result)) {
+if ($row['username'] == $contact && $row['passwd'] == $passwd){
+$found = 1;
+}
+}
+
+if ($found == 1){ //on a trouve une file de la table avec le meme username et meme passwd
+echo '<script language="javascript">';
+echo 'alert("Successful log in!")';
+echo '</script>';
+
+
+//donc on cherche si ce produit existe:
+
+$sql = "SELECT username, product FROM products";
+$result = mysqli_query($conn, $sql);
+$product_exists=0;
+
+if (mysqli_num_rows($result) > 0) {
+// on regarde si ce produit existe
+while($row = mysqli_fetch_assoc($result)) {
+if ($row['username'] == $contact && $row['product'] == $product){
+$product_exists = 1;
+}
+}
+} else {
+echo "0 results";
+}
+
+if ($product_exists == 1){ //on peut eliminer le produit car il existe
+
+//formule pour eliminer le produit
+$sql = "DELETE FROM products WHERE username = '$contact' AND product = '$product'";
+//formule pour incrementer le nombre de ventes
+$updateposts = "UPDATE users\n"
+
+. "  SET solds = solds + 1 \n"
+
+. "  WHERE username = '$contact'";
+
+if ($conn->query($sql) === TRUE && $conn->query($updateposts)) {
+echo '<script language="javascript">';
+echo 'alert("Your product has been successfully deleted!")';
+echo '</script>';
+} else {
+echo '<script language="javascript">';
+echo 'alert("There has been a problem when saving the information in our databases. Please try again or contact help@lfbook.es")';
+echo '</script>';
+}
+
+} else {//quand on n'a pas trouve dans la table des produits aucun couple username-products pareil
+echo '<script language="javascript">';
+echo 'alert("You haven´t posted any product with that name!")';
+echo '</script>';
+}
+
+} else {//quand le mot de passe ne correspond pas a celui associe au username rentre dans la table users
+
+echo '<script language="javascript">';
+echo 'alert("Your password was incorrect! The product hasn´t been deleted.")';
+echo '</script>';
+}
+}
+
+$conn->close(); //on ferme la connection avec mysql
+
+}
+?>
+
+
+
+    <form class="box" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+      <h1>Delete product</h1>
+      <input type="text" name="contact" placeholder="Email or phone number" required>
+      <input type="password" name="passwd" placeholder="Password" required>
+      <input type="text" name="product" placeholder="Product" required>
+      <input type="submit" name="" value="Submit">
+    </form>
+
+  </body>
+
+</html>
+
+
