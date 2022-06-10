@@ -1,0 +1,339 @@
+html{
+  font-size: 14px;
+  font-family: "Roboto Cn", sans-serif;
+}
+
+a#header{
+  text-decoration: none;
+  color: #353232;
+}
+
+h3{
+  font-size: 3rem;
+  font-weight: 300;
+  text-decoration: none;
+  color: #353232;
+  text-align: center;
+
+}
+
+header{
+  width: 100%;
+  height: 35vh;
+  background: 'white'
+}
+
+.container{
+  max-width: 120rem;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.menu-toggle{
+  position: fixed;
+  top: 2.5rem;
+  right: 2.5rem;
+  color: #eeeeee;
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 1000;
+  display: none;
+}
+
+nav{ /* rectangle qui contient le ul (la liste des options)*/
+  padding-top: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+}
+
+.brand{ /*le mot affiché 'lfbook' */
+  font-size: 3rem;
+  font-weight: 300;
+  transform: translateX(-100rem);
+  animation: slideIn .5s forwards; /*le temps d'arrivée ('glissage')*/
+}
+
+.brand span{
+  color: #50C878;
+}
+
+nav ul#header{
+  display: flex; /*pour aligner les membres du ul(=liste)*/
+}
+
+nav ul#header li#header{
+  list-style: none;
+  transform: translateX(100rem);
+  animation: slideIn .5s forwards; /*le temps d'arrivée ('glissage')*/
+}
+
+
+nav ul#header li#header:nth-child(1){ /* pour l'apparition un après l'autres des options*/
+  animation-delay: 0s;
+}
+
+nav ul#header li#header:nth-child(2){
+  animation-delay: 0.25s;
+}
+
+nav ul#header li#header:nth-child(3){
+  animation-delay: 0.5s;
+}
+
+nav ul#header li#header:nth-child(4){
+  animation-delay: 0.75s;
+}
+
+nav ul#header li#header a#header{
+  padding: 1rem 0; 
+  margin: 0 3rem;
+  position: relative;
+  letter-spacing: 2px;
+}
+
+nav ul#header li#header a#header:last-child{
+  margin-right: 0;
+}
+
+nav ul#header li#header a#header::before, /*pour faire editer les traits verts*/
+nav ul#header li#header a::after{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #50C878;
+  left: 0;
+  transform: scaleX(0);
+  transition: all .5s;
+}
+
+nav ul#header li#header a#header::before{ /*pour faire apparaitre les 2 traits un sur l'autre, pas collés au texte*/
+  top: 0;
+  transform-origin: left;
+}
+
+nav ul#header li#header a#header::after{
+  bottom: 0;
+  transform-origin: right;
+}
+
+.overlay{
+  background-color: rgba(0,0,0,.95);
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transition: opacity 650ms;
+  transform: scale(0);
+  opacity: 0;
+  display: none;
+}
+
+nav ul#header li#header a#header:hover::before, /* pour faire apparaitre les traits rouges*/
+nav ul#header li#header a#header:hover::after{
+  transform: scaleX(1);
+}
+
+@keyframes slideIn {
+  from{
+
+  }
+  to{
+    transform: translateX(0);
+  }
+}
+
+@media screen and (max-width: 700px){
+
+  .menu-toggle{
+    display: block;
+  }
+
+  nav{
+    padding-top: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+
+  nav ul#header{
+    flex-direction: column;
+  }
+
+  nav ul#header li#header{
+    margin-top: 5rem;
+  }
+
+  nav ul#header li#header a#header{
+    color: #353232
+
+      font-size: 2.5rem;
+  }
+
+  .brand{
+    font-size: 5rem;
+  }
+
+  .overlay.menu-open,
+  nav.menu-open{
+    display: flex;
+    transform: scale(1);
+    opacity: 1;
+  }
+
+}
+
+
+/*pour le search box */
+
+.search-box {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #2f3640;
+  height: 40px;
+  border-radius: 40px;
+  padding: 10px;
+}
+
+.search-box:hover > .search-txt { /*taille quand il s'ouvre */
+  width: 240px;
+  padding: 0 6px;
+}
+
+.search-box:hover > .search-btn { /*logo loupe quand searchbar est ouvert*/
+  background: white;
+  color: black;
+}
+
+.search-btn { /* logo bar avec searchbar fermé*/
+  color: #e84118;
+  float: right;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2f3640;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+  color: white;
+  cursor: pointer;
+}
+
+.search-btn > i {
+  font-size: 30px;
+}
+
+.search-txt {
+  border: none;
+  background: none;
+  outline: none;
+  float: left;
+  padding: 0;
+  color: white;
+  font-size: 16px;
+  transition: 0.4s;
+  line-height: 40px;
+  width: 0px;
+  font-weight: bold;
+}
+
+
+
+
+/*pour la liste (ul) de boxes de produits #2f3640*/
+
+ul#wrapper {
+  list-style: none;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+li#boxes {
+  width: 428px;
+  height: 185px;
+  background: #2f3640;
+  float: left;
+  margin: 10px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  text-align: center;
+}
+
+a#boxes {
+  font-size: 24px;
+  color: white;
+  line-height: 170px;
+  font-weight: 100;
+  text-decoration: none;
+}
+
+form {
+  position: absolute;
+  left: 65%;
+  width: 200px;
+  height: 40px;
+}
+
+
+
+
+
+
+/*pour selectionner la ville */
+
+
+
+.dropbtn {
+  border-radius: 40px;
+  position: relative;
+  background-color: #2f3640;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  border-radius: 30px;
+  background-color: #2f3640;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: white;
+  text-align: left;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #50C878}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  border-radius: 20px;
+}
+
+
+
